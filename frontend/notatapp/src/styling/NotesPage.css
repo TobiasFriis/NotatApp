@@ -1,0 +1,50 @@
+/*NOTE PAGE*/
+.notes-page-wrapper{
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-background);
+    display: flex;
+    color: var(--color-primary-text);
+}
+.notes-page-left-bar-wrapper{
+    width: 100%;
+    max-width: 20rem;
+    max-height: 100%;
+    background-color: var(--color-left-bar);
+    flex-shrink: 0;
+    border-radius: 0px 40px 40px 0px;
+    text-align: left;
+    padding: 30px;
+    font-size: larger;
+    display: flex;
+    flex-direction: column;
+}
+.notes-page-note-list{
+    flex-shrink: 0;
+    max-width: 100%;
+    height: 100%;
+    max-height: 70%;
+    
+}
+
+.notes-page-text-area-wrapper{
+    flex: 1;
+    max-height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.notes-page-text-area-content{
+    width: 90%;
+    height: 90%;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+}
+
+
+
+/*NOTE COMPONENT*/
+.note-card-wrapper{
+    
+}

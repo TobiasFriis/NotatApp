@@ -1,0 +1,38 @@
+html, body, #root{
+  height: 100%;
+  margin: 0;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Ubuntu Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
+  
+}
+
+a{
+    color: var(--color-link);
+}
+
+:root {
+  /* Farger for lys tema */
+  --color-background: #ffffff;
+  --color-primary-text: #111416;
+  --color-secondary-text: #24292e;
+  --color-border: #343d49;
+  --color-accent: #546278;
+  --color-button-submit-bg: #ffea00;
+  --color-button-submit-text: #111416;
+  --color-link: #0466c8;
+  --color-left-bar: #e9ecef;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #121212;
+    --color-primary-text: #E0E0E0;
+    --color-secondary-text: #B0B0B0;
+    --color-border: #444444;
+    --color-accent: #888888;
+    --color-button-submit-bg: #baa029;
+    --color-button-submit-text: #E0E0E0;
+    --color-link: #0466c8;
+    --color-left-bar: #1e1e1e;
+  }
+}

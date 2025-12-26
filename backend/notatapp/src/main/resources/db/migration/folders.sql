@@ -1,0 +1,11 @@
+CREATE TABLE folders (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  parent_id BIGINT,
+  owner_id BIGINT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_folder_parent
+    FOREIGN KEY (parent_id) REFERENCES folders(id) ON DELETE CASCADE,
+  CONSTRAINT fk_folder_owner
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
