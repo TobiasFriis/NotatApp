@@ -203,13 +203,16 @@ const NotesPage = () => {
   }
 
   useEffect(() => {
+    console.log("Notechanged: ", noteChanged)
     if (!noteChanged) return
 
     const timeout = setTimeout(async () => {
       if(openNote){
         handleSaveNote()
       }else{
-        handleCreateNote()
+        if(title !== "" && content !== ""){
+          handleCreateNote()
+        }
       }
     }, 5000)
 
@@ -251,7 +254,7 @@ const NotesPage = () => {
           </div>
         </div>
       </div>
-      <TipTapEditor content={content} setContent={setContent} title={title} setTitle={setTitle} />
+      <TipTapEditor content={content} setContent={setContent} title={title} setTitle={setTitle} setOpenNote={setOpenNote} setNoteChanged={setNoteChanged} />
       <div className={`notes-page-notification-wrapper ${notificationType} ${notificationExit ? "exit" : ""}`}>
           <label>{notificationText}</label>
       </div>

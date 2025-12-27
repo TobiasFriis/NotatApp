@@ -11,15 +11,18 @@ import CodeBlock from "@tiptap/extension-code-block";
 
 import "../styling/TipTap.css";
 import { useEffect } from "react";
+import type { Note } from "../types/Note";
 
 type Props = {
   content: string;
   setContent: (html: string) => void;
   title: string;
   setTitle: (html: string) => void;
+  setOpenNote: (html: Note | undefined) => void;
+  setNoteChanged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle }) => {
+const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, setOpenNote, setNoteChanged }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -45,6 +48,12 @@ const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle })
     },
   });
 
+  const handleCloseNote = async () => {
+    await setOpenNote(undefined)
+    await setTitle("")
+    await setContent("")
+  }
+
   useEffect(() => {
     if (!editor) return
 
@@ -60,6 +69,7 @@ const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle })
     <div className="tiptap-wrapper">
       <div className="tiptap-title-wrapper">
         <input type="text" className="tiptap-title-input" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <button onClick={handleCloseNote}>Close note</button>
       </div>
       <div className="tiptap-toolbar">
         <button onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
