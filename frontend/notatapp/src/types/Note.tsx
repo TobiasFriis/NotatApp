@@ -5,7 +5,7 @@ export type Note = {
     title: string;
     content: string;
     role?: string;
-    folder?: Folder;
+    folderId?: number;
 
     createdAt?: string;
     updatedAt?: string;

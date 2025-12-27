@@ -6,6 +6,7 @@ import type { Folder } from '../types/Folder';
 import type { Note } from '../types/Note';
 import noteIcon from "../assets/note.png";
 import folderIcon from "../assets/folder.png";
+import folderOpenIcon from "../assets/open-folder.png";
 import TipTapEditor from '../component/TipTapEditor';
 
 type FolderTreeProps = {
@@ -15,7 +16,7 @@ type FolderTreeProps = {
 const NotesPage = () => {
 
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [openFolders, setOpenFolders] = useState<Set<number>>(new Set());
+  const [openFolders, setOpenFolders] = useState<number[]>([]);
   const [inputFolderName, setInputFolderName] = useState<string>("");
   const [selectedFolder, setSelectedFolder] = useState<number>();
 
@@ -33,18 +34,23 @@ const NotesPage = () => {
   const [error, setError] = useState<boolean>(false);
 
   
-  const toggleFolder = (folderId:number) => {
+const toggleFolder = (folderId: number) => {
+  if(selectedFolder === folderId && openFolders.includes(folderId)){
+    setSelectedFolder(undefined)
+  }else{
     setSelectedFolder(folderId)
-    setOpenFolders(prev => {
-      const next = new Set(prev);
-      if(next.has(folderId)) {
-        next.delete(folderId);
-      } else{
-        next.add(folderId);
-      }
-      return next;
-    });
-  };
+  }
+  setOpenFolders(prev => {
+    if (prev.includes(folderId)) {
+      // fjern
+      return prev.filter(id => id !== folderId)
+    } else {
+      // legg til
+      return [...prev, folderId]
+    }
+  })
+  console.log("Open folders: ",openFolders)
+}
 
   const fetchNotes = async () => {
     try{
@@ -79,24 +85,29 @@ const NotesPage = () => {
   }, [content])
 
   const FolderTree: React.FC<FolderTreeProps> = ({ parentId }) => {
-    const childFolders = folders.filter(f => (f.parent?.id === parentId || (!f.parent && parentId === null)) && f.id !== parentId);
-    const childNotes = notes.filter(n => n.folder?.id === parentId || (!n.folder && parentId === null));
+    const isRoot = parentId === null
+
+    const childFolders = folders.filter(f => f.parentId === parentId)
+    const childNotes = notes.filter(n => n.folderId === parentId)
+
     console.log("childFolders: ",childFolders)
     console.log("childNotes: ",childNotes);
     if(childFolders.length === 0 && childNotes.length === 0) return null;
 
     return (
-      <ul>
+      <ul className='notes-page-note-list-ul'>
           {childFolders.map(folder => (
-              <li key={`folder-${folder.id}`}>
+            <div>
+              <li key={`folder-${folder.id}`} className={`notes-page-note-list-folder ${selectedFolder === folder.id ? "selected" : ""}`} >
                 <span onClick={() => toggleFolder(folder.id)} className='notes-page-note-list-li-div'>
-                  <img src={folderIcon} />
+                  <img src={openFolders.includes(folder.id) ? folderOpenIcon : folderIcon} />
                   {folder.name}
                 </span>
-                {openFolders.has(folder.id) && (
-                  <FolderTree parentId={folder.id} />
-                )}
               </li>
+              {openFolders.includes(folder.id) && (
+                <FolderTree parentId={folder.id} />
+              )}
+            </div>
           ))}
           {childNotes.map(note => (
             <li key={`note-${note.id}`}>
@@ -233,7 +244,6 @@ const NotesPage = () => {
   return (
     <div className='notes-page-wrapper'>
       <div className='notes-page-left-bar-wrapper'>
-          <h2>Notes</h2>
           <div className='notes-page-create-folder-wrapper'>
             <input value={inputFolderName} onChange={(e) => setInputFolderName(e.target.value)} placeholder='Folder...' />
             <button onClick={testCreateFolder}>Create folder</button>

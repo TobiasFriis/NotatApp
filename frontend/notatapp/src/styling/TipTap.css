@@ -20,7 +20,7 @@
 }
 .tiptap-title-wrapper button{
   background-color: var(--color-text-area);
-  border: 0px solid var(--color-border);
+  border: 1px solid var(--color-border);
   color: var(--color-primary-text);
   border-radius: 7px;
   padding: 5px;

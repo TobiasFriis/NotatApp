@@ -3,8 +3,7 @@ export type Folder = {
     id: number;
     name: string;
 
-    parent: Folder;
-    children?: Folder[];
+    parentId?: number;
 
     createdAt?: string;
     updatedAt?: string;
