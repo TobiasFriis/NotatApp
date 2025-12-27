@@ -19,6 +19,21 @@ export const NoteService = {
 
         return response.json();
     },
+    update: async (noteId: number, title: string, content: string): Promise<Note> => {
+        const response = await fetch(`${BASE_URL}/update`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({noteId, title, content}),
+        })
+
+        if(!response.ok){
+            throw new Error("Note update failed");
+        }
+        return response.json();
+    },
 
     getAll: async () => {
         const response = await fetch(`${BASE_URL}/getAll`, {

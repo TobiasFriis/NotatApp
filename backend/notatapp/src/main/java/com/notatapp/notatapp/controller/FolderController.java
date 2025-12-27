@@ -1,5 +1,7 @@
 package com.notatapp.notatapp.controller;
 
+import com.notatapp.notatapp.dto.FolderDto;
+import com.notatapp.notatapp.mapper.FolderMapper;
 import com.notatapp.notatapp.model.Folder;
 import com.notatapp.notatapp.model.User;
 import com.notatapp.notatapp.service.FolderService;
@@ -23,26 +25,29 @@ public class FolderController {
     /* ================= CREATE ================= */
 
     @PostMapping("/create")
-    public Folder createFolder(
+    public FolderDto createFolder(
             @RequestBody CreateFolderRequest request,
             @RequestHeader("Authorization") String authHeader
     ) {
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
-        return folderService.createFolder(
+        Folder folder = folderService.createFolder(
                 request.name(),
                 request.parentId(),
-                user
-        );
+                user);
+        return FolderMapper.toDto(folder);
     }
 
     /* ================= READ ================= */
 
     @GetMapping("/getAll")
-    public List<Folder> getAll(@RequestHeader("Authorization") String authHeader){
+    public List<FolderDto> getAll(@RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
-        return folderService.getAll(user);
+        return folderService.getAll(user)
+        .stream()
+        .map(FolderMapper::toDto)
+        .toList();
     }
 
     // Root folders

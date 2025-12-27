@@ -4,6 +4,7 @@ const BASE_URL = "http://localhost:8083/folders"
 
 export const FolderService = {
     create: async (name:string, parentId?: number): Promise<Folder> => {
+        console.log(parentId)
         const response = await fetch(`${BASE_URL}/create`, {
         method: "POST",
         headers: {

@@ -3,6 +3,8 @@ package com.notatapp.notatapp.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.notatapp.notatapp.dto.NoteDto;
+import com.notatapp.notatapp.mapper.NoteMapper;
 import com.notatapp.notatapp.model.Note;
 import com.notatapp.notatapp.model.User;
 import com.notatapp.notatapp.service.JwtService;
@@ -34,10 +36,13 @@ public class NoteController {
 
     //READ
     @GetMapping("/getAll")
-    public List<Note> getAll(@RequestHeader("Authorization") String authHeader) {
+    public List<NoteDto> getAll(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
-        return noteService.getAllNotes(user.getId());
+        return noteService.getAllNotes(user.getId())
+        .stream()
+        .map(NoteMapper::toDto)
+        .toList();
     }
 
     @GetMapping("/getById")
@@ -73,9 +78,14 @@ public class NoteController {
 
     //CREATE
     @PostMapping("/create")
-    public Note create(@RequestBody CreateRequest req, @RequestHeader("Authorization") String authHeader){
+    public NoteDto create(@RequestBody CreateRequest req, @RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
-        return noteService.createNote(req.title(), req.content(), req.folderId(), userService.getUserFromEmail(jwtService.getEmailFromToken(token)));    
+        Note note = noteService.createNote(
+            req.title(), 
+            req.content(), 
+            req.folderId(), 
+            userService.getUserFromEmail(jwtService.getEmailFromToken(token)));
+        return NoteMapper.toDto(note);
     }
 
 
