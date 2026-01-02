@@ -1,5 +1,17 @@
 package com.notatapp.notatapp.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.notatapp.notatapp.dto.FolderDto;
 import com.notatapp.notatapp.mapper.FolderMapper;
 import com.notatapp.notatapp.model.Folder;
@@ -9,9 +21,6 @@ import com.notatapp.notatapp.service.JwtService;
 import com.notatapp.notatapp.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/folders")
@@ -83,6 +92,21 @@ public class FolderController {
     }
 
     /* ================= UPDATE ================= */
+    @PostMapping("/update")
+    public FolderDto updateFolder(
+            @RequestBody UpdateFolderRequest request,
+            @RequestHeader("Authorization") String authHeader
+    ) {
+        String token = authHeader.replace("Bearer ", "");
+        User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
+        FolderDto dto = FolderMapper.toDto(folderService.updateFolder(
+                request.id(),
+                request.name(),
+                request.parentId(),
+                user
+        ));
+        return dto;
+    }
 
     @PutMapping("/{id}")
     public Folder renameFolder(
@@ -116,5 +140,11 @@ public class FolderController {
 
     public record RenameFolderRequest(
             String name
+    ) {}
+
+    public record UpdateFolderRequest(
+            Long id,
+            String name,
+            Long parentId
     ) {}
 }

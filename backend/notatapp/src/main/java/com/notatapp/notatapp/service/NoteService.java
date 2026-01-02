@@ -1,7 +1,6 @@
 package com.notatapp.notatapp.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -61,12 +60,16 @@ public class NoteService {
 
     /* UPDATE */
     @Transactional
-    public Note updateNote(Long noteId, Long userId, String title, String content) {
+    public Note updateNote(Long noteId, Long userId, String title, String content, Long folderId) {
         Note note = getNote(noteId, userId);
 
-        note.setTitle(title);
-        note.setContent(content);
-
+        if (title != null) note.setTitle(title);
+        if (content != null) note.setContent(content);
+        if (folderId != null) {
+            Folder folder = folderRepository.findByIdAndOwnerId(folderId, userId)
+                    .orElseThrow(() -> new RuntimeException("Folder not found"));
+            note.setFolder(folder);
+        }
         return note;
     }
 

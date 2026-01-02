@@ -1,6 +1,14 @@
 package com.notatapp.notatapp.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.notatapp.notatapp.dto.NoteDto;
@@ -11,18 +19,7 @@ import com.notatapp.notatapp.service.JwtService;
 import com.notatapp.notatapp.service.NoteService;
 import com.notatapp.notatapp.service.UserService;
 
-import org.springframework.security.oauth2.jwt.Jwt;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -69,10 +66,16 @@ public class NoteController {
 
     //UPDATE
     @PostMapping("/update")
-    public Note updateNote(@RequestBody UpdateRequest req, @RequestHeader("Authorization") String authHeader){
+    public NoteDto updateNote(@RequestBody UpdateRequest req, @RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
-        return noteService.updateNote(req.noteId(), user.getId(), req.title(), req.content());
+        Note note = noteService.updateNote(
+            req.noteId(), 
+            user.getId(), 
+            req.title(), 
+            req.content(), 
+            req.folderId());
+        return NoteMapper.toDto(note);
     }
 
 
@@ -98,5 +101,5 @@ public class NoteController {
     }
 
     public record CreateRequest(String title, String content, Long folderId) {} 
-    public record UpdateRequest(Long noteId, String title, String content) {}
+    public record UpdateRequest(Long noteId, String title, String content, Long folderId) {}
 }

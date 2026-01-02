@@ -35,21 +35,24 @@ const NotesPage = () => {
 
   
 const toggleFolder = (folderId: number) => {
-  if(selectedFolder === folderId && openFolders.includes(folderId)){
-    setSelectedFolder(undefined)
-  }else{
+  if(selectedFolder === undefined && openFolders.includes(folderId)){
     setSelectedFolder(folderId)
-  }
-  setOpenFolders(prev => {
-    if (prev.includes(folderId)) {
-      // fjern
-      return prev.filter(id => id !== folderId)
-    } else {
-      // legg til
-      return [...prev, folderId]
+  }else{
+    if(selectedFolder === folderId && openFolders.includes(folderId)){
+      setSelectedFolder(undefined)
+    }else{
+      setSelectedFolder(folderId)
     }
-  })
-  console.log("Open folders: ",openFolders)
+    setOpenFolders(prev => {
+      if (prev.includes(folderId)) {
+        // fjern
+        return prev.filter(id => id !== folderId)
+      } else {
+        // legg til
+        return [...prev, folderId]
+      }
+    })
+  }
 }
 
   const fetchNotes = async () => {
@@ -98,8 +101,40 @@ const toggleFolder = (folderId: number) => {
       <ul className='notes-page-note-list-ul'>
           {childFolders.map(folder => (
             <div>
-              <li key={`folder-${folder.id}`} className={`notes-page-note-list-folder ${selectedFolder === folder.id ? "selected" : ""}`} >
-                <span onClick={() => toggleFolder(folder.id)} className='notes-page-note-list-li-div'>
+              <li 
+              key={`folder-${folder.id}`} 
+              className={`notes-page-note-list-folder ${selectedFolder === folder.id ? "selected" : ""}`} 
+              onClick={() => toggleFolder(folder.id)}
+              onDragOver={(e) => e.preventDefault()} // Må ha for å tillate drop
+              onDrop={async (e) => {
+                e.preventDefault();
+                const folderId = e.dataTransfer.getData("folderId");
+                const folderName = e.dataTransfer.getData("folderName");
+                console.log("Dropped on folder: ", folder.name, folder.id, folderId);
+                const noteId = e.dataTransfer.getData("noteId");
+                if (noteId) {
+                  // Oppdater note med ny folderId
+                  await NoteService.update(Number(noteId), undefined, undefined, folder.id);
+                  fetchNotes(); // oppdater frontend
+                }
+                if (folderId) {
+                  // Oppdater folder med ny parentId
+                  try{
+                    await FolderService.update(Number(folderId), folderName, folder.id);
+                    fetchFolders(); // oppdater frontend
+                  } catch (err){
+                    console.error("Error: ", err);
+                  }
+                }
+              }}
+              draggable={true}
+              onDragStart={(e) => {
+                e.dataTransfer.setData("folderId", folder.id.toString());
+                e.dataTransfer.setData("folderName", folder.name);
+                console.log("Dragging folder: ", folder.name, folder.id);
+              }}
+              >
+                <span className='notes-page-note-list-li-div'>
                   <img src={openFolders.includes(folder.id) ? folderOpenIcon : folderIcon} />
                   {folder.name}
                 </span>
@@ -110,7 +145,7 @@ const toggleFolder = (folderId: number) => {
             </div>
           ))}
           {childNotes.map(note => (
-            <li key={`note-${note.id}`}>
+            <li key={`note-${note.id}`} draggable={true} onDragStart={(e) => {e.dataTransfer.setData("noteId", note.id.toString());}}>
               <span className='notes-page-note-list-li-div' onClick={() => handleOpenNote(note)}>
                 <img src={noteIcon} />
                 {note.title}
@@ -162,27 +197,7 @@ const toggleFolder = (folderId: number) => {
     handleNotification()
   }
 
-  const testGetAll = async () => {
-    try{
-      var notat = await NoteService.getAll();
-      console.log(notat);
-    } catch (err){
-      console.error("error: ", err);
-    }
-  }
-
-  const testCreate = async () => {
-    
-    try{
-      var response = await NoteService.create("test", "test content")
-      fetchNotes()
-      console.log(response);
-    } catch (err){
-      console.error("error: ", err);
-    }
-  }
-
-  const testCreateFolder = async () => {
+  const createFolder = async () => {
     try{
       var response = await FolderService.create(inputFolderName, selectedFolder);
       fetchFolders()
@@ -246,7 +261,8 @@ const toggleFolder = (folderId: number) => {
       <div className='notes-page-left-bar-wrapper'>
           <div className='notes-page-create-folder-wrapper'>
             <input value={inputFolderName} onChange={(e) => setInputFolderName(e.target.value)} placeholder='Folder...' />
-            <button onClick={testCreateFolder}>Create folder</button>
+            <button onClick={createFolder}>Create folder</button>
+            {selectedFolder !== undefined && <button onClick={() => setSelectedFolder(undefined)}>Unselect folder</button>}
           </div>
         <div className='notes-page-note-list'>
           <div>

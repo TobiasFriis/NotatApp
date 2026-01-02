@@ -1,13 +1,15 @@
 package com.notatapp.notatapp.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.notatapp.notatapp.model.Folder;
 import com.notatapp.notatapp.model.User;
 import com.notatapp.notatapp.repository.FolderRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +60,20 @@ public class FolderService {
     }
 
     /* ================= UPDATE ================= */
+    @Transactional
+    public Folder updateFolder(Long id, String name, Long parentId, User user) {
+        Folder existingFolder = getFolder(id, user);
+        existingFolder.setName(name);
+        if (parentId != null) {
+            Folder newParent = getFolder(parentId, user);
+            existingFolder.setParent(newParent);
+        } else {
+            existingFolder.setParent(null);
+        }
+        return folderRepo.save(existingFolder);
+    }
 
+    @Transactional
     public Folder renameFolder(Long folderId, String newName, User user) {
         Folder folder = getFolder(folderId, user);
         folder.setName(newName);

@@ -36,5 +36,21 @@ export const FolderService = {
 
         return response.json();
 
-    }
+    },
+    update: async (folderId: number, name: string, parentId?: number): Promise<Folder> => {
+        const response = await fetch(`${BASE_URL}/update`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ folderId, name, parentId }),
+        });
+
+        if (!response.ok){
+            throw new Error("Folder update failed");
+        }
+
+        return response.json();
+    },
 }
