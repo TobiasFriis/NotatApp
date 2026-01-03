@@ -38,6 +38,7 @@ export const FolderService = {
 
     },
     update: async (folderId: number, name: string, parentId?: number): Promise<Folder> => {
+        console.log(folderId, name, parentId)
         const response = await fetch(`${BASE_URL}/update`, {
             method: "POST",
             headers: {
@@ -53,4 +54,18 @@ export const FolderService = {
 
         return response.json();
     },
-}
+    delete: async (folderId: number): Promise<void> => {
+        const response = await fetch(`${BASE_URL}/delete/${folderId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok){
+            throw new Error("Folder deletion failed");
+        }
+        return;
+    }
+};

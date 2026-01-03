@@ -82,19 +82,11 @@ const toggleFolder = (folderId: number) => {
     fetchFolders();
   }, [])
 
-
-  useEffect(() => {
-    console.log("useEffect content: ",content)
-  }, [content])
-
   const FolderTree: React.FC<FolderTreeProps> = ({ parentId }) => {
     const isRoot = parentId === null
 
     const childFolders = folders.filter(f => f.parentId === parentId)
     const childNotes = notes.filter(n => n.folderId === parentId)
-
-    console.log("childFolders: ",childFolders)
-    console.log("childNotes: ",childNotes);
     if(childFolders.length === 0 && childNotes.length === 0) return null;
 
     return (
@@ -110,7 +102,6 @@ const toggleFolder = (folderId: number) => {
                 e.preventDefault();
                 const folderId = e.dataTransfer.getData("folderId");
                 const folderName = e.dataTransfer.getData("folderName");
-                console.log("Dropped on folder: ", folder.name, folder.id, folderId);
                 const noteId = e.dataTransfer.getData("noteId");
                 if (noteId) {
                   // Oppdater note med ny folderId
@@ -131,7 +122,6 @@ const toggleFolder = (folderId: number) => {
               onDragStart={(e) => {
                 e.dataTransfer.setData("folderId", folder.id.toString());
                 e.dataTransfer.setData("folderName", folder.name);
-                console.log("Dragging folder: ", folder.name, folder.id);
               }}
               >
                 <span className='notes-page-note-list-li-div'>
@@ -158,7 +148,6 @@ const toggleFolder = (folderId: number) => {
 
 
   const handleSaveNote = async () => {
-    console.log(noteChanged)
     if(!openNote || !noteChanged)return
     await NoteService.update(openNote.id, title, content)
     await fetchNotes()
@@ -166,7 +155,6 @@ const toggleFolder = (folderId: number) => {
     setNotificationText("Saved note!")
     setNotificationType("save")
     handleNotification()
-    console.log("Saved note")
   }
 
   const handleOpenNote = async (note:Note) => {
@@ -181,7 +169,6 @@ const toggleFolder = (folderId: number) => {
       return
     }
     setOpenNote(note);
-    console.log(note.content)
     await setContent(note.content);
     await setTitle(note.title);
     setNoteChanged(false)
@@ -197,18 +184,42 @@ const toggleFolder = (folderId: number) => {
     handleNotification()
   }
 
+  const handleUnselectNote = () => {
+    setOpenNote(undefined);
+    setTitle("");
+    setContent("");
+  }
+
+  const handleDeleteNote = async () => {
+    if(!openNote)return
+    await NoteService.delete(openNote.id)
+    fetchNotes()
+    handleUnselectNote()
+    setNotificationText("Deleted note!")
+    setNotificationType("delete")
+    handleNotification()
+  }
+
+  const handleDeleteFolder = async () => {
+    if(selectedFolder === undefined)return
+    await FolderService.delete(selectedFolder)
+    fetchFolders()
+    setSelectedFolder(undefined)
+    setNotificationText("Deleted folder!")
+    setNotificationType("delete")
+    handleNotification()
+  }
+
   const createFolder = async () => {
     try{
-      var response = await FolderService.create(inputFolderName, selectedFolder);
+      await FolderService.create(inputFolderName, selectedFolder);
       fetchFolders()
-      console.log(response);
     } catch (err){
       console.error("Error: ", err);
     }
 
     try{
-      var fold = await FolderService.getAll();
-      console.log(fold);
+      await FolderService.getAll();
     } catch (err){
       console.error("Error: ", err);
     }
@@ -229,7 +240,6 @@ const toggleFolder = (folderId: number) => {
   }
 
   useEffect(() => {
-    console.log("Notechanged: ", noteChanged)
     if (!noteChanged) return
 
     const timeout = setTimeout(async () => {
@@ -251,10 +261,6 @@ const toggleFolder = (folderId: number) => {
     setNoteChanged(true);
   }, [content, title])
 
-  useEffect(() => {
-    console.log("Selected folder: ", selectedFolder)
-  }, [selectedFolder])
-
   if (loading) return "Loading...";
   return (
     <div className='notes-page-wrapper'>
@@ -263,6 +269,7 @@ const toggleFolder = (folderId: number) => {
             <input value={inputFolderName} onChange={(e) => setInputFolderName(e.target.value)} placeholder='Folder...' />
             <button onClick={createFolder}>Create folder</button>
             {selectedFolder !== undefined && <button onClick={() => setSelectedFolder(undefined)}>Unselect folder</button>}
+            {selectedFolder !== undefined && <button onClick={handleDeleteFolder}>Delete folder</button>}
           </div>
         <div className='notes-page-note-list'>
           <div>
@@ -280,7 +287,7 @@ const toggleFolder = (folderId: number) => {
           </div>
         </div>
       </div>
-      <TipTapEditor content={content} setContent={setContent} title={title} setTitle={setTitle} setOpenNote={setOpenNote} setNoteChanged={setNoteChanged} />
+      <TipTapEditor content={content} setContent={setContent} title={title} setTitle={setTitle} setOpenNote={setOpenNote} openNote={openNote} setNoteChanged={setNoteChanged} handleDeleteNote={handleDeleteNote} />
       <div className={`notes-page-notification-wrapper ${notificationType} ${notificationExit ? "exit" : ""}`}>
           <label>{notificationText}</label>
       </div>

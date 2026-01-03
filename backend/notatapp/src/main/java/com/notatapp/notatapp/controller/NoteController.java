@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -93,8 +94,8 @@ public class NoteController {
 
 
     //DELETE
-    @DeleteMapping("/delete")
-    public void deleteNote(@RequestParam Long noteId, @RequestHeader("Authorization") String authHeader){
+    @DeleteMapping("/delete/{noteId}")
+    public void deleteNote(@PathVariable Long noteId, @RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
         noteService.deleteNote(noteId, user.getId());

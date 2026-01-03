@@ -19,10 +19,12 @@ type Props = {
   title: string;
   setTitle: (html: string) => void;
   setOpenNote: (html: Note | undefined) => void;
+  openNote?: Note;
   setNoteChanged: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeleteNote?: () => Promise<void>;
 };
 
-const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, setOpenNote, setNoteChanged }) => {
+const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, setOpenNote, openNote, setNoteChanged, handleDeleteNote }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -69,7 +71,8 @@ const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, s
     <div className="tiptap-wrapper">
       <div className="tiptap-title-wrapper">
         <input type="text" className="tiptap-title-input" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <button onClick={handleCloseNote}>Close note</button>
+        <button onClick={handleCloseNote} className="tiptap-close-button">Close note</button>
+        {openNote && <button onClick={handleDeleteNote} className="tiptap-delete-button">Delete note</button>}
       </div>
       <div className="tiptap-toolbar">
         <button onClick={() => editor.chain().focus().toggleBold().run()}>B</button>

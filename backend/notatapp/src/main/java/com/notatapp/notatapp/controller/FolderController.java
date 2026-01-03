@@ -100,7 +100,7 @@ public class FolderController {
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
         FolderDto dto = FolderMapper.toDto(folderService.updateFolder(
-                request.id(),
+                request.folderId(),
                 request.name(),
                 request.parentId(),
                 user
@@ -121,14 +121,14 @@ public class FolderController {
 
     /* ================= DELETE ================= */
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{folderId}")
     public void deleteFolder(
-            @PathVariable Long id,
+            @PathVariable Long folderId,
             @RequestHeader("Authorization") String authHeader
     ) {
         String token = authHeader.replace("Bearer ", "");
         User user = userService.getUserFromEmail(jwtService.getEmailFromToken(token));
-        folderService.deleteFolder(id, user);
+        folderService.deleteFolder(folderId, user);
     }
 
     /* ================= REQUEST DTOs ================= */
@@ -143,7 +143,7 @@ public class FolderController {
     ) {}
 
     public record UpdateFolderRequest(
-            Long id,
+            Long folderId,
             String name,
             Long parentId
     ) {}

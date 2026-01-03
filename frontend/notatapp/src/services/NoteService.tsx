@@ -50,5 +50,20 @@ export const NoteService = {
 
         return response.json();
 
+    },
+    delete: async (noteId: number): Promise<void> => {
+        const response = await fetch(`${BASE_URL}/delete/${noteId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            }
+        });
+
+        if (!response.ok){
+            throw new Error("Note deletion failed");
+        }
+
+        return;
     }
-}
+};

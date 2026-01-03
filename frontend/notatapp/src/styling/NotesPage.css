@@ -27,7 +27,7 @@
     text-align: left;
 }
 .notes-page-create-folder-wrapper input{
-    width: 10rem;
+    width: 5rem;
     background-color: var(--color-left-bar);
     border: 2px solid var(--color-border);
     border-radius: 7px;

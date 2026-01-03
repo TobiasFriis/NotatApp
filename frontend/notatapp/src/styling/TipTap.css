@@ -19,6 +19,13 @@
   position: relative;
 }
 .tiptap-title-wrapper button{
+
+  transform: translate(-50deg);
+}
+.tiptap-title-wrapper button:hover{
+  transform: scale(1.03);
+}
+.tiptap-close-button{
   background-color: var(--color-text-area);
   border: 1px solid var(--color-border);
   color: var(--color-primary-text);
@@ -28,12 +35,23 @@
   padding-right: 10px;
   height: 3.5rem;
   position: absolute;
-  right: 0;
+  right: 0px;
   cursor: pointer;
   transform: translate(-50deg);
 }
-.tiptap-title-wrapper button:hover{
-  transform: scale(1.03);
+.tiptap-delete-button{
+  background-color: var(--color-text-area);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary-text);
+  border-radius: 7px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 3.5rem;
+  position: absolute;
+  left: 0px;
+  cursor: pointer;
+  transform: translate(-50deg);
 }
 .tiptap-title-input{
   background-color: var(--color-text-area);
