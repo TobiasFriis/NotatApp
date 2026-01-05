@@ -1,6 +1,6 @@
 import type { User } from "../types/User";
 
-const BASE_URL = "http://localhost:8083/auth";
+const BASE_URL = "http://localhost:8080/auth";
 
 export const UserService = {
     register: async (email: string, password: string): Promise<User> => {

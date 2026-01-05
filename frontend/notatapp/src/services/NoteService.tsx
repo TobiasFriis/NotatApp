@@ -1,6 +1,6 @@
 import type { Note } from "../types/Note";
 
-const BASE_URL = "http://localhost:8083/note"
+const BASE_URL = "http://localhost:8080/note"
 
 export const NoteService = {
     create: async (title: string, content: string, folderId?: number): Promise<Note> => {
