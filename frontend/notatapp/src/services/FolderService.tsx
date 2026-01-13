@@ -1,6 +1,6 @@
 import type { Folder } from "../types/Folder";
 
-const BASE_URL = "http://localhost:8080/folders"
+const BASE_URL = `${import.meta.env.VITE_API_URL}/folder`;
 
 export const FolderService = {
     create: async (name:string, parentId?: number): Promise<Folder> => {

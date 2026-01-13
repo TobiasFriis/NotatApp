@@ -11,6 +11,7 @@ const RegisterPage = (() => {
     const [error, setError] = useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        console.log("Submitting registration form")
         e.preventDefault();
         setError("");
 

@@ -3,8 +3,8 @@ package com.notatapp.notatapp.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class CorsConfig {
@@ -13,7 +13,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:5173"); // frontend
+        configuration.addAllowedOrigin("http://100.105.50.64:3000"); // frontend
+        configuration.addAllowedOrigin("http://localhost:3000"); // frontend
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 

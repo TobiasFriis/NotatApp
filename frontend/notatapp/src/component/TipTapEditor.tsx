@@ -1,6 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
@@ -24,7 +23,7 @@ type Props = {
   handleDeleteNote?: () => Promise<void>;
 };
 
-const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, setOpenNote, openNote, setNoteChanged, handleDeleteNote }) => {
+const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, setOpenNote, openNote, handleDeleteNote }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

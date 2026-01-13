@@ -1,4 +1,3 @@
-import type { Folder } from "./Folder";
 
 export type Note = {
     id: number;

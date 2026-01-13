@@ -61,6 +61,7 @@ const toggleFolder = (folderId: number) => {
       setNotes(data);
     } catch (err){
       setError(true);
+      console.error("Error: ", error);
       console.error("Error: ", err);
     } finally {
       setLoading(false);
@@ -83,8 +84,6 @@ const toggleFolder = (folderId: number) => {
   }, [])
 
   const FolderTree: React.FC<FolderTreeProps> = ({ parentId }) => {
-    const isRoot = parentId === null
-
     const childFolders = folders.filter(f => f.parentId === parentId)
     const childNotes = notes.filter(n => n.folderId === parentId)
     if(childFolders.length === 0 && childNotes.length === 0) return null;

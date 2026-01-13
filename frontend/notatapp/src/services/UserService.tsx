@@ -1,7 +1,6 @@
 import type { User } from "../types/User";
 
-const BASE_URL = "http://localhost:8080/auth";
-
+const BASE_URL = `${import.meta.env.VITE_API_URL}/auth`;
 export const UserService = {
     register: async (email: string, password: string): Promise<User> => {
         const response = await fetch(`${BASE_URL}/register`, {

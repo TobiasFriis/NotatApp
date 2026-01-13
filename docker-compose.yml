@@ -1,40 +1,49 @@
-version: "3.9"
-
 services:
   postgres:
-    image: postgres:16
-    container_name: notatapp-postgres
+    image: postgres
+    container_name: postgresql
     environment:
-      POSTGRES_DB: notatapp
-      POSTGRES_USER: notatapp
-      POSTGRES_PASSWORD: notatapp
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U casaos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
       context: ./backend/notatapp
     container_name: notatapp-backend
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notatapp
-      SPRING_DATASOURCE_USERNAME: notatapp
-      SPRING_DATASOURCE_PASSWORD: notatapp
-      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "8080:8080"
+
 
   frontend:
     build:
       context: ./frontend/notatapp
+      args:
+        VITE_API_URL: ${VITE_API_URL}
     container_name: notatapp-frontend
     ports:
       - "3000:80"
     depends_on:
       - backend
+    environment:
+      - VITE_API_URL=http://localhost:8080
 
 volumes:
   postgres_data:
