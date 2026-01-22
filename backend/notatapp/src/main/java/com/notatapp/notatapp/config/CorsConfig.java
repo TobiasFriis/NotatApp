@@ -15,12 +15,13 @@ public class CorsConfig {
         configuration.setAllowCredentials(true);
         configuration.addAllowedOrigin("http://100.105.50.64:3000"); // frontend
         configuration.addAllowedOrigin("http://localhost:3000"); // frontend
+        configuration.addAllowedOrigin("http://localhost:5173"); // frontend
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }

@@ -1,6 +1,7 @@
 import type { Folder } from "../types/Folder";
+import { API_URL } from "../services/EnvVarService";
 
-const BASE_URL = `${(window as any)._env.API_URL}/folders`;
+const BASE_URL = `${API_URL}/folders`;
 
 export const FolderService = {
   create: async (name: string, parentId?: number): Promise<Folder> => {

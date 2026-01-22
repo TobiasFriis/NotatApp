@@ -1,6 +1,7 @@
 import type { Note } from "../types/Note";
+import { API_URL } from "../services/EnvVarService";
 
-const BASE_URL = `${(window as any)._env.API_URL}/note`;
+const BASE_URL = `${API_URL}/note`;
 
 export const NoteService = {
   create: async (

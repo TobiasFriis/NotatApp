@@ -1,6 +1,7 @@
 import type { User } from "../types/User";
+import { API_URL } from "../services/EnvVarService";
 
-const BASE_URL = `${(window as any)._env.API_URL}/auth`;
+const BASE_URL = `${API_URL}/auth`;
 export const UserService = {
   register: async (email: string, password: string): Promise<User> => {
     const response = await fetch(`${BASE_URL}/register`, {
