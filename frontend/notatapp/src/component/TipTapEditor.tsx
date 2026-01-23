@@ -23,7 +23,15 @@ type Props = {
   handleDeleteNote?: () => Promise<void>;
 };
 
-const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, setOpenNote, openNote, handleDeleteNote }) => {
+const TipTapEditor: React.FC<Props> = ({
+  content,
+  setContent,
+  title,
+  setTitle,
+  setOpenNote,
+  openNote,
+  handleDeleteNote,
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -50,46 +58,98 @@ const TipTapEditor: React.FC<Props> = ({ content, setContent, title, setTitle, s
   });
 
   const handleCloseNote = async () => {
-    await setOpenNote(undefined)
-    await setTitle("")
-    await setContent("")
-  }
+    await setOpenNote(undefined);
+    await setTitle("");
+    await setContent("");
+  };
 
   useEffect(() => {
-    if (!editor) return
+    if (!editor) return;
 
-    // Unngå å overskrive mens man skriver
     if (editor.getHTML() !== content) {
-      editor.commands.setContent(content || '')
+      editor.commands.setContent(content || "");
     }
-  }, [content, editor])
+  }, [content, editor]);
 
   if (!editor) return null;
 
   return (
     <div className="tiptap-wrapper">
       <div className="tiptap-title-wrapper">
-        <input type="text" className="tiptap-title-input" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <button onClick={handleCloseNote} className="tiptap-close-button">Close note</button>
-        {openNote && <button onClick={handleDeleteNote} className="tiptap-delete-button">Delete note</button>}
+        <input
+          type="text"
+          className="tiptap-title-input"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <button onClick={handleCloseNote} className="tiptap-close-button">
+          Close note
+        </button>
+        {openNote && (
+          <button onClick={handleDeleteNote} className="tiptap-delete-button">
+            Delete note
+          </button>
+        )}
       </div>
       <div className="tiptap-toolbar">
-        <button onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
-        <button onClick={() => editor.chain().focus().toggleItalic().run()}>I</button>
-        <button onClick={() => editor.chain().focus().toggleUnderline().run()}>U</button>
-        <button onClick={() => editor.chain().focus().toggleStrike().run()}>S</button>
+        <button onClick={() => editor.chain().focus().toggleBold().run()}>
+          B
+        </button>
+        <button onClick={() => editor.chain().focus().toggleItalic().run()}>
+          I
+        </button>
+        <button onClick={() => editor.chain().focus().toggleUnderline().run()}>
+          U
+        </button>
+        <button onClick={() => editor.chain().focus().toggleStrike().run()}>
+          S
+        </button>
 
-        <button onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>H1</button>
-        <button onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button>
+        <button
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
+        >
+          H1
+        </button>
+        <button
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+        >
+          H2
+        </button>
 
-        <button onClick={() => editor.chain().focus().toggleBulletList().run()}>• List</button>
-        <button onClick={() => editor.chain().focus().toggleOrderedList().run()}>1. List</button>
-        <button onClick={() => editor.chain().focus().toggleTaskList().run()}>☑</button>
+        <button onClick={() => editor.chain().focus().toggleBulletList().run()}>
+          • List
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        >
+          1. List
+        </button>
+        <button onClick={() => editor.chain().focus().toggleTaskList().run()}>
+          ☑
+        </button>
 
-        <button onClick={() => editor.chain().focus().toggleCodeBlock().run()}>{"</>"}</button>
-        <button onClick={() => editor.chain().focus().setTextAlign("left").run()}>⬅</button>
-        <button onClick={() => editor.chain().focus().setTextAlign("center").run()}>↔</button>
-        <button onClick={() => editor.chain().focus().setTextAlign("right").run()}>➡</button>
+        <button onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+          {"</>"}
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+        >
+          ⬅
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+        >
+          ↔
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+        >
+          ➡
+        </button>
       </div>
       <div className="editor-wrapper">
         <EditorContent editor={editor} />

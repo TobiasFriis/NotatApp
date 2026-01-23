@@ -1,15 +1,12 @@
 package com.notatapp.notatapp.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.notatapp.notatapp.model.Folder;
 import com.notatapp.notatapp.model.User;
 import com.notatapp.notatapp.repository.FolderRepository;
-
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -23,22 +20,25 @@ public class FolderService {
         Folder parent = null;
 
         if (parentId != null) {
-            parent = folderRepo.findByIdAndOwnerId(parentId, user.getId())
-                    .orElseThrow(() -> new RuntimeException("Parent folder not found"));
+            parent = folderRepo
+                .findByIdAndOwnerId(parentId, user.getId())
+                .orElseThrow(() ->
+                    new RuntimeException("Parent folder not found")
+                );
         }
 
         Folder folder = Folder.builder()
-                .name(name)
-                .parent(parent)
-                .owner(user)
-                .build();
+            .name(name)
+            .parent(parent)
+            .owner(user)
+            .build();
 
         return folderRepo.save(folder);
     }
 
     /* ================= READ ================= */
 
-    public List<Folder> getAll(User user){
+    public List<Folder> getAll(User user) {
         return folderRepo.findAllByOwnerId(user.getId());
     }
 
@@ -51,8 +51,9 @@ public class FolderService {
     }
 
     public Folder getFolder(Long folderId, User user) {
-        return folderRepo.findByIdAndOwnerId(folderId, user.getId())
-                .orElseThrow(() -> new RuntimeException("Folder not found"));
+        return folderRepo
+            .findByIdAndOwnerId(folderId, user.getId())
+            .orElseThrow(() -> new RuntimeException("Folder not found"));
     }
 
     public List<Folder> getAllFolders(User user) {
@@ -86,6 +87,5 @@ public class FolderService {
     public void deleteFolder(Long folderId, User user) {
         Folder folder = getFolder(folderId, user);
         folderRepo.delete(folder);
-        // ON DELETE CASCADE tar seg av subfolders + notes
     }
 }

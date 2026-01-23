@@ -41,10 +41,10 @@ const NotesPage = () => {
 
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      const now = Math.floor(Date.now() / 1000); // sekunder
+      const now = Math.floor(Date.now() / 1000);
       return payload.exp < now;
     } catch {
-      return true; // ugyldig token
+      return true;
     }
   };
 
@@ -64,10 +64,8 @@ const NotesPage = () => {
       }
       setOpenFolders((prev) => {
         if (prev.includes(folderId)) {
-          // fjern
           return prev.filter((id) => id !== folderId);
         } else {
-          // legg til
           return [...prev, folderId];
         }
       });
@@ -127,24 +125,22 @@ const NotesPage = () => {
                 const folderName = e.dataTransfer.getData("folderName");
                 const noteId = e.dataTransfer.getData("noteId");
                 if (noteId) {
-                  // Oppdater note med ny folderId
                   await NoteService.update(
                     Number(noteId),
                     undefined,
                     undefined,
                     folder.id,
                   );
-                  fetchNotes(); // oppdater frontend
+                  fetchNotes();
                 }
                 if (folderId) {
-                  // Oppdater folder med ny parentId
                   try {
                     await FolderService.update(
                       Number(folderId),
                       folderName,
                       folder.id,
                     );
-                    fetchFolders(); // oppdater frontend
+                    fetchFolders();
                   } catch (err) {
                     console.error("Error: ", err);
                   }
