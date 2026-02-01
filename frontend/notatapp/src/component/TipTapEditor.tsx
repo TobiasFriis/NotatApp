@@ -13,149 +13,188 @@ import { useEffect } from "react";
 import type { Note } from "../types/Note";
 
 type Props = {
-  content: string;
-  setContent: (html: string) => void;
-  title: string;
-  setTitle: (html: string) => void;
-  setOpenNote: (html: Note | undefined) => void;
-  openNote?: Note;
-  setNoteChanged: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDeleteNote?: () => Promise<void>;
+    content: string;
+    setContent: (html: string) => void;
+    title: string;
+    setTitle: (html: string) => void;
+    setOpenNote: (html: Note | undefined) => void;
+    openNote?: Note;
+    setNoteChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    handleDeleteNote?: () => Promise<void>;
+    handleSaveNote: () => void;
 };
 
 const TipTapEditor: React.FC<Props> = ({
-  content,
-  setContent,
-  title,
-  setTitle,
-  setOpenNote,
-  openNote,
-  handleDeleteNote,
-}) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        codeBlock: false,
-      }),
-      Underline,
-      Link.configure({
-        openOnClick: false,
-      }),
-      Highlight,
-      TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-      CodeBlock,
-    ],
     content,
-    onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
-    },
-  });
+    setContent,
+    title,
+    setTitle,
+    setOpenNote,
+    openNote,
+    handleDeleteNote,
+    handleSaveNote,
+}) => {
+    const editor = useEditor({
+        extensions: [
+            StarterKit.configure({
+                codeBlock: false,
+            }),
+            Underline,
+            Link.configure({
+                openOnClick: false,
+            }),
+            Highlight,
+            TaskList,
+            TaskItem.configure({
+                nested: true,
+            }),
+            TextAlign.configure({
+                types: ["heading", "paragraph"],
+            }),
+            CodeBlock,
+        ],
+        content,
+        onUpdate: ({ editor }) => {
+            setContent(editor.getHTML());
+        },
+    });
 
-  const handleCloseNote = async () => {
-    await setOpenNote(undefined);
-    await setTitle("");
-    await setContent("");
-  };
+    const handleCloseNote = async () => {
+        handleSaveNote();
+        setOpenNote(undefined);
+        setTitle("");
+        setContent("");
+    };
 
-  useEffect(() => {
-    if (!editor) return;
+    useEffect(() => {
+        if (!editor) return;
 
-    if (editor.getHTML() !== content) {
-      editor.commands.setContent(content || "");
-    }
-  }, [content, editor]);
+        if (editor.getHTML() !== content) {
+            editor.commands.setContent(content || "");
+        }
+    }, [content, editor]);
 
-  if (!editor) return null;
+    if (!editor) return null;
 
-  return (
-    <div className="tiptap-wrapper">
-      <div className="tiptap-title-wrapper">
-        <input
-          type="text"
-          className="tiptap-title-input"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <button onClick={handleCloseNote} className="tiptap-close-button">
-          Close note
-        </button>
-        {openNote && (
-          <button onClick={handleDeleteNote} className="tiptap-delete-button">
-            Delete note
-          </button>
-        )}
-      </div>
-      <div className="tiptap-toolbar">
-        <button onClick={() => editor.chain().focus().toggleBold().run()}>
-          B
-        </button>
-        <button onClick={() => editor.chain().focus().toggleItalic().run()}>
-          I
-        </button>
-        <button onClick={() => editor.chain().focus().toggleUnderline().run()}>
-          U
-        </button>
-        <button onClick={() => editor.chain().focus().toggleStrike().run()}>
-          S
-        </button>
+    return (
+        <div className="tiptap-wrapper">
+            <div className="tiptap-title-wrapper">
+                <input
+                    type="text"
+                    className="tiptap-title-input"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+                <button
+                    onClick={handleCloseNote}
+                    className="tiptap-close-button"
+                >
+                    Close note
+                </button>
+                {openNote && (
+                    <button
+                        onClick={handleDeleteNote}
+                        className="tiptap-delete-button"
+                    >
+                        Delete note
+                    </button>
+                )}
+            </div>
+            <div className="tiptap-toolbar">
+                <button
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                >
+                    B
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                >
+                    I
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleUnderline().run()
+                    }
+                >
+                    U
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                >
+                    S
+                </button>
 
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-        >
-          H1
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-        >
-          H2
-        </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleHeading({ level: 1 }).run()
+                    }
+                >
+                    H1
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleHeading({ level: 2 }).run()
+                    }
+                >
+                    H2
+                </button>
 
-        <button onClick={() => editor.chain().focus().toggleBulletList().run()}>
-          • List
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        >
-          1. List
-        </button>
-        <button onClick={() => editor.chain().focus().toggleTaskList().run()}>
-          ☑
-        </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleBulletList().run()
+                    }
+                >
+                    • List
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleOrderedList().run()
+                    }
+                >
+                    1. List
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleTaskList().run()
+                    }
+                >
+                    ☑
+                </button>
 
-        <button onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
-          {"</>"}
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
-        >
-          ⬅
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
-        >
-          ↔
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
-        >
-          ➡
-        </button>
-      </div>
-      <div className="editor-wrapper">
-        <EditorContent editor={editor} />
-      </div>
-    </div>
-  );
+                <button
+                    onClick={() =>
+                        editor.chain().focus().toggleCodeBlock().run()
+                    }
+                >
+                    {"</>"}
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().setTextAlign("left").run()
+                    }
+                >
+                    ⬅
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().setTextAlign("center").run()
+                    }
+                >
+                    ↔
+                </button>
+                <button
+                    onClick={() =>
+                        editor.chain().focus().setTextAlign("right").run()
+                    }
+                >
+                    ➡
+                </button>
+            </div>
+            <div className="editor-wrapper">
+                <EditorContent editor={editor} />
+            </div>
+        </div>
+    );
 };
 
 export default TipTapEditor;

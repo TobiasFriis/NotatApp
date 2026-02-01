@@ -5,6 +5,7 @@ import { FolderService } from "../services/FolderService";
 import type { Folder } from "../types/Folder";
 import type { Note } from "../types/Note";
 
+import DeleteFolderModal from "../component/DeleteFolderModal";
 import FolderTree from "../component/FolderTree";
 import TipTapEditor from "../component/TipTapEditor";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,8 @@ const NotesPage = () => {
     const [noteChanged, setNoteChanged] = useState<boolean>(false);
     const [content, setContent] = useState<string>("");
     const [title, setTitle] = useState<string>("");
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     const [notificationType, setNotificationType] = useState<string>("empty");
     const [notificationText, setNotificationText] = useState<string>("");
@@ -84,7 +87,7 @@ const NotesPage = () => {
         if (!openNote || !noteChanged) return;
         await NoteService.update(openNote.id, title, content);
         await fetchNotes();
-        await setNoteChanged(false);
+        setNoteChanged(false);
         setNotificationText("Saved note!");
         setNotificationType("save");
         handleNotification();
@@ -195,12 +198,24 @@ const NotesPage = () => {
     if (loading) return "Loading...";
     return (
         <div className="notes-page-wrapper">
+            {modalOpen && (
+                <DeleteFolderModal
+                    modalOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    handleDeleteFolder={handleDeleteFolder}
+                />
+            )}
             <div className="notes-page-left-bar-wrapper">
                 <div className="notes-page-create-folder-wrapper">
                     <input
                         value={inputFolderName}
                         onChange={(e) => setInputFolderName(e.target.value)}
                         placeholder="Folder..."
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                createFolder();
+                            }
+                        }}
                     />
                     <button onClick={createFolder}>Create folder</button>
                     {selectedFolder !== undefined && (
@@ -209,7 +224,7 @@ const NotesPage = () => {
                         </button>
                     )}
                     {selectedFolder !== undefined && (
-                        <button onClick={handleDeleteFolder}>
+                        <button onClick={() => setModalOpen(true)}>
                             Delete folder
                         </button>
                     )}
@@ -249,6 +264,7 @@ const NotesPage = () => {
                 openNote={openNote}
                 setNoteChanged={setNoteChanged}
                 handleDeleteNote={handleDeleteNote}
+                handleSaveNote={handleSaveNote}
             />
             <div
                 className={`notes-page-notification-wrapper ${notificationType} ${notificationExit ? "exit" : ""}`}
