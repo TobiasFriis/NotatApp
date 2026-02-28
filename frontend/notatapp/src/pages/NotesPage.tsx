@@ -249,7 +249,7 @@ const NotesPage = () => {
                 </div>
                 <div className="notes-page-todo-list">
                     <h2>Todo</h2>
-                    <div>Coming soon!</div>
+                    <div>No todos!</div>
                 </div>
                 <button onClick={logout} className="notes-page-logout-button">
                     Logout
