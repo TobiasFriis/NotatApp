@@ -7,10 +7,22 @@ import TextAlign from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import CodeBlock from "@tiptap/extension-code-block";
+import Image from "@tiptap/extension-image";
+import {
+    CiTextAlignCenter,
+    CiTextAlignLeft,
+    CiTextAlignRight,
+} from "react-icons/ci";
+import { FaCode, FaListUl } from "react-icons/fa6";
+import { IoCheckboxOutline } from "react-icons/io5";
+import { FaListOl } from "react-icons/fa";
+import { LuHeading1, LuHeading2 } from "react-icons/lu";
 
 import "../styling/TipTap.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Note } from "../types/Note";
+import DeleteNoteModal from "./DeleteNoteModal";
+import { TabIndent } from "./TabIndent";
 
 type Props = {
     content: string;
@@ -20,7 +32,7 @@ type Props = {
     setOpenNote: (html: Note | undefined) => void;
     openNote?: Note;
     setNoteChanged: React.Dispatch<React.SetStateAction<boolean>>;
-    handleDeleteNote?: () => Promise<void>;
+    handleDeleteNote: () => void;
     handleSaveNote: () => void;
 };
 
@@ -34,6 +46,8 @@ const TipTapEditor: React.FC<Props> = ({
     handleDeleteNote,
     handleSaveNote,
 }) => {
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -52,6 +66,18 @@ const TipTapEditor: React.FC<Props> = ({
                 types: ["heading", "paragraph"],
             }),
             CodeBlock,
+            TabIndent,
+            Image.configure({
+                allowBase64: true,
+                inline: true,
+                resize: {
+                    enabled: true,
+                    directions: ["top", "bottom", "left", "right"], // can be any direction or diagonal combination
+                    minWidth: 50,
+                    minHeight: 50,
+                    alwaysPreserveAspectRatio: true,
+                },
+            }),
         ],
         content,
         onUpdate: ({ editor }) => {
@@ -78,6 +104,13 @@ const TipTapEditor: React.FC<Props> = ({
 
     return (
         <div className="tiptap-wrapper">
+            {deleteModalOpen && (
+                <DeleteNoteModal
+                    modalOpen={deleteModalOpen}
+                    onClose={() => setDeleteModalOpen(false)}
+                    handleDeleteNote={handleDeleteNote}
+                />
+            )}
             <div className="tiptap-title-wrapper">
                 <input
                     type="text"
@@ -93,7 +126,7 @@ const TipTapEditor: React.FC<Props> = ({
                 </button>
                 {openNote && (
                     <button
-                        onClick={handleDeleteNote}
+                        onClick={() => setDeleteModalOpen(true)}
                         className="tiptap-delete-button"
                     >
                         Delete note
@@ -129,14 +162,14 @@ const TipTapEditor: React.FC<Props> = ({
                         editor.chain().focus().toggleHeading({ level: 1 }).run()
                     }
                 >
-                    H1
+                    <LuHeading1 />
                 </button>
                 <button
                     onClick={() =>
                         editor.chain().focus().toggleHeading({ level: 2 }).run()
                     }
                 >
-                    H2
+                    <LuHeading2 />
                 </button>
 
                 <button
@@ -144,21 +177,21 @@ const TipTapEditor: React.FC<Props> = ({
                         editor.chain().focus().toggleBulletList().run()
                     }
                 >
-                    • List
+                    <FaListUl />
                 </button>
                 <button
                     onClick={() =>
                         editor.chain().focus().toggleOrderedList().run()
                     }
                 >
-                    1. List
+                    <FaListOl />
                 </button>
                 <button
                     onClick={() =>
                         editor.chain().focus().toggleTaskList().run()
                     }
                 >
-                    ☑
+                    <IoCheckboxOutline />
                 </button>
 
                 <button
@@ -166,31 +199,39 @@ const TipTapEditor: React.FC<Props> = ({
                         editor.chain().focus().toggleCodeBlock().run()
                     }
                 >
-                    {"</>"}
+                    <FaCode />
                 </button>
                 <button
                     onClick={() =>
                         editor.chain().focus().setTextAlign("left").run()
                     }
                 >
-                    ⬅
+                    <CiTextAlignLeft />
                 </button>
                 <button
                     onClick={() =>
                         editor.chain().focus().setTextAlign("center").run()
                     }
                 >
-                    ↔
+                    <CiTextAlignCenter />
                 </button>
                 <button
                     onClick={() =>
                         editor.chain().focus().setTextAlign("right").run()
                     }
                 >
-                    ➡
+                    <CiTextAlignRight />
                 </button>
             </div>
-            <div className="editor-wrapper">
+            <div
+                className="editor-wrapper"
+                onKeyDown={(e) => {
+                    if (e.key === "Tab") {
+                        e.preventDefault(); // hindrer browser focus
+                        // din egen logikk, f.eks insert 4 spaces
+                    }
+                }}
+            >
                 <EditorContent editor={editor} />
             </div>
         </div>

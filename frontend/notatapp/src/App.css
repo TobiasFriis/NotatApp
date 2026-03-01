@@ -1,40 +1,53 @@
-html, body, #root{
-  height: 100%;
-  margin: 0;
-  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Ubuntu Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
-  
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    font-family:
+        ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Ubuntu Mono",
+        "Roboto Mono", Menlo, Monaco, Consolas, monospace;
 }
 
-a{
+button {
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 2.95px 2.6px;
+}
+
+@media (prefers-color-scheme: dark) {
+    button {
+        box-shadow: rgba(255, 255, 255, 0.15) 0px 0.95px 2.6px;
+    }
+}
+
+a {
     color: var(--color-link);
 }
 
 :root {
-  /* Farger for lys tema */
-  --color-background: #ffffff;
-  --color-primary-text: #111416;
-  --color-secondary-text: #24292e;
-  --color-border: #343d49;
-  --color-accent: #546278;
-  --color-button-submit-bg: #ffea00;
-  --color-button-submit-text: #111416;
-  --color-link: #0466c8;
-  --color-left-bar: #e9ecef;
-  --color-text-area: #e9ecef;
+    /* Farger for lys tema */
+    --color-background: #ffffff;
+    --color-primary-text: #111416;
+    --color-secondary-text: #24292e;
+    --color-border: #343d49;
+    --color-accent: #546278;
+    --color-button-submit-bg: #ffea00;
+    --color-button-submit-text: #111416;
+    --color-link: #0466c8;
+    --color-left-bar: #e9ecef;
+    --color-text-area: #e9ecef;
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #121212;
-    --color-primary-text: #E0E0E0;
-    --color-secondary-text: #B0B0B0;
-    --color-border: #444444;
-    --color-accent: #888888;
-    --color-button-submit-bg: #baa029;
-    --color-button-submit-text: #E0E0E0;
-    --color-link: #0466c8;
-    --color-left-bar: #1e1e1e;
-    --color-text-area: #1e1e1e;
-  }
+    :root {
+        --color-background: #121212;
+        --color-primary-text: #e0e0e0;
+        --color-secondary-text: #b0b0b0;
+        --color-border: #444444;
+        --color-accent: #888888;
+        --color-button-submit-bg: #baa029;
+        --color-button-submit-text: #e0e0e0;
+        --color-link: #0466c8;
+        --color-left-bar: #1e1e1e;
+        --color-text-area: #1e1e1e;
+    }
 }
