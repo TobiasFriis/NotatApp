@@ -72,7 +72,12 @@ const TipTapEditor: React.FC<Props> = ({
                 inline: true,
                 resize: {
                     enabled: true,
-                    directions: ["top", "bottom", "left", "right"], // can be any direction or diagonal combination
+                    directions: [
+                        "top-left",
+                        "top-right",
+                        "bottom-left",
+                        "bottom-right",
+                    ], // can be any direction or diagonal combination
                     minWidth: 50,
                     minHeight: 50,
                     alwaysPreserveAspectRatio: true,

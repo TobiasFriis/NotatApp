@@ -188,3 +188,18 @@ ul[data-type="taskList"] p {
     margin: 0;
     display: inline;
 }
+
+/* wrapper må være inline-block eller block */
+div[data-resize-container] {
+    display: inline-block;
+    position: relative;
+}
+
+/* håndtakene som brukeren drar */
+div[data-resize-handle] {
+    width: 5px;
+    height: 5px;
+    background: transparent
+    position: absolute;
+    cursor: se-resize; /* eksempel for nederste-høyre hjørne */
+}
