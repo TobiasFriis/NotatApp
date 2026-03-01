@@ -27,7 +27,6 @@
     color: var(--color-primary-text);
     width: 80px;
     border-radius: 7px;
-    box-shadow: rgba(0, 0, 0, 0.45) 0px 2.95px 2.6px;
     cursor: pointer;
     transform: translateY(-50deg);
 }
@@ -55,18 +54,10 @@
     border: 2px solid var(--color-border);
     color: var(--color-primary-text);
     border-radius: 7px;
-    box-shadow: rgba(0, 0, 0, 0.45) 0px 2.95px 2.6px;
     cursor: pointer;
     transform: translateY(-50deg);
 }
-@media (prefers-color-scheme: dark) {
-    .notes-page-create-folder-wrapper button {
-        box-shadow: rgba(255, 255, 255, 0.15) 0px 0.95px 2.6px;
-    }
-    .notes-page-logout-button {
-        box-shadow: rgba(255, 255, 255, 0.15) 0px 0.95px 2.6px;
-    }
-}
+
 .notes-page-create-folder-wrapper button:hover {
     transform: scale(1.03);
 }

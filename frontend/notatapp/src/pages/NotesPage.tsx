@@ -104,8 +104,8 @@ const NotesPage = () => {
             return;
         }
         setOpenNote(note);
-        await setContent(note.content);
-        await setTitle(note.title);
+        setContent(note.content);
+        setTitle(note.title);
         setNoteChanged(false);
     };
 
