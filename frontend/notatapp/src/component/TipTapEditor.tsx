@@ -7,6 +7,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import CodeBlock from "@tiptap/extension-code-block";
+import DragHandle from "@tiptap/extension-drag-handle";
 import Image from "@tiptap/extension-image";
 import {
     CiTextAlignCenter,
@@ -81,6 +82,14 @@ const TipTapEditor: React.FC<Props> = ({
                     minWidth: 50,
                     minHeight: 50,
                     alwaysPreserveAspectRatio: true,
+                },
+            }),
+            DragHandle.configure({
+                render: () => {
+                    const handle = document.createElement("div");
+                    handle.className = "custom-drag-handle";
+                    handle.innerHTML = "⋮⋮";
+                    return handle;
                 },
             }),
         ],
