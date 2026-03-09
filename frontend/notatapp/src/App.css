@@ -34,6 +34,8 @@ a {
     --color-link: #0466c8;
     --color-left-bar: #e9ecef;
     --color-text-area: #e9ecef;
+    --color-drag-handle-bg: #888888;
+    --color-drag-handle-text: #e0e0e0;
 }
 
 /* Dark mode */
@@ -49,5 +51,7 @@ a {
         --color-link: #0466c8;
         --color-left-bar: #1e1e1e;
         --color-text-area: #1e1e1e;
+        --color-drag-handle-bg: #444444;
+        --color-drag-handle-text: #e0e0e0;
     }
 }

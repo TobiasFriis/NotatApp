@@ -210,11 +210,13 @@ div[data-resize-handle] {
 .custom-drag-handle {
     position: absolute;
     left: 7px !important;
-
+    padding: 1px;
+    text-align: center;
     cursor: grab;
     opacity: 1;
     user-select: none;
-    background-color: var(--color-border);
+    background-color: var(--color-drag-handle-bg);
+    color: var(--color-drag-handle-text);
     transform: scale(0.3);
     transform: translateY(20%);
     border-radius: 4px;
