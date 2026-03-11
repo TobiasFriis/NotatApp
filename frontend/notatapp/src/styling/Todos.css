@@ -1,0 +1,21 @@
+.todo-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.todo-wrapper h2 {
+    margin-bottom: 0px;
+}
+.todo-wrapper input {
+    background-color: var(--color-left-bar);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 7px;
+    padding: 8px 5px 8px 5px;
+    width: 10rem;
+}
+.todo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}

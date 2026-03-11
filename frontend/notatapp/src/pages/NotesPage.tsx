@@ -4,11 +4,13 @@ import { NoteService } from "../services/NoteService";
 import { FolderService } from "../services/FolderService";
 import type { Folder } from "../types/Folder";
 import type { Note } from "../types/Note";
+import { MdCreateNewFolder, MdDelete, MdDeselect } from "react-icons/md";
 
 import DeleteFolderModal from "../component/DeleteFolderModal";
 import FolderTree from "../component/FolderTree";
 import TipTapEditor from "../component/TipTapEditor";
 import { useNavigate } from "react-router-dom";
+import Todos from "../component/Todos";
 
 const NotesPage = () => {
     const navigate = useNavigate();
@@ -217,15 +219,17 @@ const NotesPage = () => {
                             }
                         }}
                     />
-                    <button onClick={createFolder}>Create folder</button>
+                    <button onClick={createFolder}>
+                        <MdCreateNewFolder />
+                    </button>
                     {selectedFolder !== undefined && (
                         <button onClick={() => setSelectedFolder(undefined)}>
-                            Unselect folder
+                            <MdDeselect />
                         </button>
                     )}
                     {selectedFolder !== undefined && (
                         <button onClick={() => setModalOpen(true)}>
-                            Delete folder
+                            <MdDelete />
                         </button>
                     )}
                 </div>
@@ -248,8 +252,7 @@ const NotesPage = () => {
                     </div>
                 </div>
                 <div className="notes-page-todo-list">
-                    <h2>Todo</h2>
-                    <div>No todos!</div>
+                    <Todos />
                 </div>
                 <button onClick={logout} className="notes-page-logout-button">
                     Logout
