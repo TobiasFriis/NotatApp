@@ -6,7 +6,14 @@
 .todo-wrapper h2 {
     margin-bottom: 0px;
 }
-.todo-wrapper input {
+.todo-create-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+.todo-create-wrapper input {
     background-color: var(--color-left-bar);
     color: var(--color-text);
     border: 1px solid var(--color-border);
@@ -14,8 +21,20 @@
     padding: 8px 5px 8px 5px;
     width: 10rem;
 }
+.todo-create-wrapper button {
+    background-color: var(--color-left-bar);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    font-size: 18px;
+    border-radius: 7px;
+    padding: 5px;
+}
 .todo-container {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+.todo-item-wrapper {
+    font-size: 15px;
+    cursor: pointer;
 }
