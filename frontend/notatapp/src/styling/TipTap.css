@@ -74,6 +74,8 @@
     border-radius: 20px;
     justify-content: center;
     width: fit-content;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .tiptap-toolbar button {
