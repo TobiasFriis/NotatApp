@@ -33,6 +33,8 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .todo-item-wrapper {
     font-size: 15px;
