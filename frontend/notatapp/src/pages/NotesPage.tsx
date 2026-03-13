@@ -11,6 +11,7 @@ import FolderTree from "../component/FolderTree";
 import TipTapEditor from "../component/TipTapEditor";
 import { useNavigate } from "react-router-dom";
 import Todos from "../component/Todos";
+import { IoMenu } from "react-icons/io5";
 
 const NotesPage = () => {
     const navigate = useNavigate();
@@ -33,6 +34,8 @@ const NotesPage = () => {
 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
+
+    const [leftBarOpen, setLeftBarOpen] = useState<boolean>(true);
 
     const isTokenExpired = (): boolean => {
         const token = localStorage.getItem("token");
@@ -163,6 +166,9 @@ const NotesPage = () => {
         setInputFolderName("");
     };
 
+    const toggleLeftBar = () => {
+        setLeftBarOpen(!leftBarOpen);
+    };
     const handleNotification = () => {
         setNotificationExit(false);
         setTimeout(() => {
@@ -197,6 +203,10 @@ const NotesPage = () => {
         setNoteChanged(true);
     }, [content, title]);
 
+    useEffect(() => {
+        if (openNote) toggleLeftBar();
+    }, [openNote]);
+
     if (loading) return "Loading...";
     return (
         <div className="notes-page-wrapper">
@@ -207,7 +217,15 @@ const NotesPage = () => {
                     handleDeleteFolder={handleDeleteFolder}
                 />
             )}
-            <div className="notes-page-left-bar-wrapper">
+            <div
+                className="notes-page-left-bar-burger-menu"
+                onClick={toggleLeftBar}
+            >
+                <IoMenu />
+            </div>
+            <div
+                className={`notes-page-left-bar-wrapper ${leftBarOpen ? "" : "closed"}`}
+            >
                 <div className="notes-page-create-folder-wrapper">
                     <input
                         value={inputFolderName}

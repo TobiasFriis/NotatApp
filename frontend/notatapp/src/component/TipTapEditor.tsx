@@ -18,12 +18,14 @@ import { FaCode, FaListUl } from "react-icons/fa6";
 import { IoCheckboxOutline } from "react-icons/io5";
 import { FaListOl } from "react-icons/fa";
 import { LuHeading1, LuHeading2 } from "react-icons/lu";
+import { AiOutlineCloseSquare } from "react-icons/ai";
 
 import "../styling/TipTap.css";
 import { useEffect, useState } from "react";
 import type { Note } from "../types/Note";
 import DeleteNoteModal from "./DeleteNoteModal";
 import { TabIndent } from "./TabIndent";
+import { MdDelete } from "react-icons/md";
 
 type Props = {
     content: string;
@@ -136,14 +138,14 @@ const TipTapEditor: React.FC<Props> = ({
                     onClick={handleCloseNote}
                     className="tiptap-close-button"
                 >
-                    Close note
+                    <AiOutlineCloseSquare />
                 </button>
                 {openNote && (
                     <button
                         onClick={() => setDeleteModalOpen(true)}
                         className="tiptap-delete-button"
                     >
-                        Delete note
+                        <MdDelete />
                     </button>
                 )}
             </div>
