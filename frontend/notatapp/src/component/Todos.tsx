@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styling/Todos.css";
 import type { Todo } from "../types/Todo";
 import { TodoService } from "../services/TodoService";
@@ -17,6 +17,15 @@ const Todos = () => {
         await TodoService.delete(id);
         setTodos(todos.filter((todo) => todo.id !== id));
     };
+    const fetchTodos = async () => {
+        const response = await TodoService.getAll();
+        setTodos(response);
+    };
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchTodos();
+    }, []);
 
     return (
         <div className="todo-wrapper">

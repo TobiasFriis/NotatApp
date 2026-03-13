@@ -20,6 +20,7 @@
     border-radius: 7px;
     padding: 8px 5px 8px 5px;
     width: 10rem;
+    max-height: 40px;
 }
 .todo-create-wrapper button {
     background-color: var(--color-left-bar);
@@ -28,6 +29,8 @@
     font-size: 18px;
     border-radius: 7px;
     padding: 5px;
+    height: 33px;
+    aspect-ratio: 1 / 1;
 }
 .todo-container {
     display: flex;

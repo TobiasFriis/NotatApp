@@ -1,7 +1,7 @@
 import type { Todo } from "../types/Todo";
 import { API_URL } from "../services/EnvVarService";
 
-const BASE_URL = `${API_URL}/note`;
+const BASE_URL = `${API_URL}/todos`;
 
 export const TodoService = {
     create: async (title: string): Promise<Todo> => {
