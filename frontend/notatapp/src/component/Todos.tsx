@@ -9,6 +9,7 @@ const Todos = () => {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     const handleCreateTodo = async () => {
+        if (todoText.trim() === "") return;
         const newTodo = await TodoService.create(todoText);
         setTodos([...todos, newTodo]);
         setTodoText("");
@@ -36,6 +37,11 @@ const Todos = () => {
                     placeholder="Add a todo..."
                     value={todoText}
                     onChange={(e) => setTodoText(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleCreateTodo();
+                        }
+                    }}
                 />
                 <button onClick={handleCreateTodo}>
                     <IoIosCreate />

@@ -4,11 +4,12 @@
     border-radius: 6px;
     background: var(--color-background);
     width: 100%;
-    max-width: 100%;
+    max-width: 100vw;
     display: flex;
     flex-direction: column;
     gap: 30px;
     align-items: center;
+    position: relative;
 }
 .tiptap-title-wrapper {
     width: 100%;
@@ -16,7 +17,7 @@
     flex-direction: row;
     gap: 30px;
     justify-content: center;
-    position: relative;
+    flex-wrap: wrap;
 }
 .tiptap-title-wrapper button {
     transform: translate(-50deg);
@@ -32,11 +33,15 @@
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    height: 3.5rem;
+    height: 40px;
+    aspect-ratio: 1/1;
     position: absolute;
-    right: 0px;
+    line-height: 0.5;
+    top: -20px;
+    right: -20px;
     cursor: pointer;
     transform: translate(-50deg);
+    font-size: 20px;
 }
 .tiptap-delete-button {
     background-color: var(--color-text-area);
@@ -46,11 +51,15 @@
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    height: 3.5rem;
+    height: 40px;
+    line-height: 0.5;
+    aspect-ratio: 1/1;
     position: absolute;
-    left: 0px;
+    top: -20px;
+    right: 35px;
     cursor: pointer;
     transform: translate(-50deg);
+    font-size: 20px;
 }
 .tiptap-title-input {
     background-color: var(--color-text-area);
@@ -63,6 +72,27 @@
     font-size: larger;
     font-weight: bolder;
     text-align: center;
+}
+
+@media (max-width: 1000px) {
+    .tiptap-wrapper {
+        padding: 20px;
+        padding-top: 80px;
+        margin: 0;
+    }
+    .tiptap-close-button {
+        position: fixed;
+        top: 15px;
+        right: 70px;
+        height: 40px;
+    }
+    .tiptap-delete-button {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        left: unset;
+        height: 40px;
+    }
 }
 
 .tiptap-toolbar {
