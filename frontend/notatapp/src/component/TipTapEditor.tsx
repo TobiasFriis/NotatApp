@@ -243,8 +243,7 @@ const TipTapEditor: React.FC<Props> = ({
                 className="editor-wrapper"
                 onKeyDown={(e) => {
                     if (e.key === "Tab") {
-                        e.preventDefault(); // hindrer browser focus
-                        // din egen logikk, f.eks insert 4 spaces
+                        e.preventDefault();
                     }
                 }}
             >
