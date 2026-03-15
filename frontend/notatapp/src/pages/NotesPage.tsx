@@ -26,6 +26,9 @@ const NotesPage = () => {
     const [content, setContent] = useState<string>("");
     const [title, setTitle] = useState<string>("");
 
+    const [tempTitle, setTempTitle] = useState<string>("");
+    const [tempContent, setTempContent] = useState<string>("");
+
     const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     const [notificationType, setNotificationType] = useState<string>("empty");
@@ -99,6 +102,8 @@ const NotesPage = () => {
     };
 
     const handleOpenNote = async (note: Note) => {
+        setTempTitle(note.title);
+        setTempContent(note.content);
         if (openNote && noteChanged) {
             await handleSaveNote();
         }
@@ -200,8 +205,10 @@ const NotesPage = () => {
     }, [content, title, noteChanged, openNote]);
 
     useEffect(() => {
-        setNoteChanged(true);
-    }, [content, title]);
+        if (tempTitle !== title || tempContent !== content) {
+            setNoteChanged(true);
+        }
+    }, [tempTitle, tempContent, title, content]);
 
     useEffect(() => {
         if (openNote) toggleLeftBar();
