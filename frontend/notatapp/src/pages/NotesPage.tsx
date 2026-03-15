@@ -230,7 +230,7 @@ const NotesPage = () => {
                     <input
                         value={inputFolderName}
                         onChange={(e) => setInputFolderName(e.target.value)}
-                        placeholder="Folder..."
+                        placeholder="Mappe..."
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 createFolder();

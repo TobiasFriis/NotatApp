@@ -83,15 +83,17 @@
     .tiptap-close-button {
         position: fixed;
         top: 15px;
-        right: 70px;
+        right: 15px;
         height: 40px;
+        width: 40px;
     }
     .tiptap-delete-button {
         position: fixed;
         top: 15px;
-        right: 15px;
+        right: 70px;
         left: unset;
         height: 40px;
+        width: 40px;
     }
 }
 
