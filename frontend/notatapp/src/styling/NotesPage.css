@@ -5,6 +5,7 @@
     background-color: var(--color-background);
     display: flex;
     color: var(--color-primary-text);
+    overflow: hidden;
 }
 
 /*---------------*/
@@ -40,7 +41,8 @@
 }
 @media (max-width: 1000px) {
     .notes-page-left-bar-wrapper {
-        align-items: center;
+        align-items: start;
+        padding-top: 50px;
     }
     .notes-page-left-bar-wrapper {
         position: fixed;

@@ -30,11 +30,11 @@ const Todos = () => {
 
     return (
         <div className="todo-wrapper">
-            <h2>Todos</h2>
+            <h2>Gjøremål</h2>
             <div className="todo-create-wrapper">
                 <input
                     type="text"
-                    placeholder="Add a todo..."
+                    placeholder="Legg til gjøremål..."
                     value={todoText}
                     onChange={(e) => setTodoText(e.target.value)}
                     onKeyDown={(e) => {
