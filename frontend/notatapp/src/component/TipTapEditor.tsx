@@ -21,7 +21,7 @@ import { LuHeading1, LuHeading2 } from "react-icons/lu";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 
 import "../styling/TipTap.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Note } from "../types/Note";
 import DeleteNoteModal from "./DeleteNoteModal";
 import { TabIndent } from "./TabIndent";
@@ -101,6 +101,14 @@ const TipTapEditor: React.FC<Props> = ({
         },
     });
 
+    const editorRef = useRef<HTMLDivElement>(null);
+
+    const scrollToTop = () => {
+        if (editorRef.current) {
+            editorRef.current.scrollTop = 0;
+        }
+    };
+
     const handleCloseNote = async () => {
         handleSaveNote();
         setOpenNote(undefined);
@@ -115,6 +123,10 @@ const TipTapEditor: React.FC<Props> = ({
             editor.commands.setContent(content || "");
         }
     }, [content, editor]);
+
+    useEffect(() => {
+        scrollToTop();
+    }, [openNote]);
 
     if (!editor) return null;
 
@@ -240,6 +252,7 @@ const TipTapEditor: React.FC<Props> = ({
                 </button>
             </div>
             <div
+                ref={editorRef}
                 className="editor-wrapper"
                 onKeyDown={(e) => {
                     if (e.key === "Tab") {
