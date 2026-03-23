@@ -211,7 +211,7 @@ const NotesPage = () => {
     }, [tempTitle, tempContent, title, content]);
 
     useEffect(() => {
-        if (openNote) toggleLeftBar();
+        if (openNote && window.innerWidth <= 1000) toggleLeftBar();
     }, [openNote]);
 
     if (loading) return "Loading...";

@@ -8,6 +8,7 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import CodeBlock from "@tiptap/extension-code-block";
 import DragHandle from "@tiptap/extension-drag-handle";
+import { TableKit } from "@tiptap/extension-table";
 import Image from "@tiptap/extension-image";
 import {
     CiTextAlignCenter,
@@ -19,6 +20,12 @@ import { IoCheckboxOutline } from "react-icons/io5";
 import { FaListOl } from "react-icons/fa";
 import { LuHeading1, LuHeading2 } from "react-icons/lu";
 import { AiOutlineCloseSquare } from "react-icons/ai";
+import {
+    TbTableColumn,
+    TbTableDashed,
+    TbTablePlus,
+    TbTableRow,
+} from "react-icons/tb";
 
 import "../styling/TipTap.css";
 import { useEffect, useRef, useState } from "react";
@@ -50,6 +57,7 @@ const TipTapEditor: React.FC<Props> = ({
     handleSaveNote,
 }) => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [tablePopupOpen, setTablePopupOpen] = useState(false);
 
     const editor = useEditor({
         extensions: [
@@ -94,6 +102,9 @@ const TipTapEditor: React.FC<Props> = ({
                     return handle;
                 },
             }),
+            TableKit.configure({
+                table: { resizable: true },
+            }),
         ],
         content,
         onUpdate: ({ editor }) => {
@@ -102,6 +113,10 @@ const TipTapEditor: React.FC<Props> = ({
     });
 
     const editorRef = useRef<HTMLDivElement>(null);
+
+    const toggleTablePopup = () => {
+        setTablePopupOpen(!tablePopupOpen);
+    };
 
     const scrollToTop = () => {
         if (editorRef.current) {
@@ -229,6 +244,25 @@ const TipTapEditor: React.FC<Props> = ({
                 >
                     <FaCode />
                 </button>
+                <div style={{ position: "relative" }}>
+                    <button onClick={toggleTablePopup}>
+                        <TbTableDashed />
+                    </button>
+                    <div
+                        style={{ display: tablePopupOpen ? "block" : "none" }}
+                        className="table-popup"
+                    >
+                        <button>
+                            <TbTablePlus />
+                        </button>
+                        <button>
+                            <TbTableRow />
+                        </button>
+                        <button>
+                            <TbTableColumn />
+                        </button>
+                    </div>
+                </div>
                 <button
                     onClick={() =>
                         editor.chain().focus().setTextAlign("left").run()
