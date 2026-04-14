@@ -49,6 +49,10 @@ const FolderTree: React.FC<FolderTreeProps> = ({
             });
         }
     };
+    const closeFolder = (folderId: number) => {
+        setOpenFolders((prev) => prev.filter((id) => id !== folderId));
+        setSelectedFolder(undefined);
+    };
 
     const childFolders = folders.filter((f) => f.parentId === parentId);
     const childNotes = notes.filter((n) => n.folderId === parentId);
@@ -94,6 +98,7 @@ const FolderTree: React.FC<FolderTreeProps> = ({
                         }}
                         draggable={true}
                         onDragStart={(e) => {
+                            closeFolder(folder.id);
                             e.dataTransfer.setData(
                                 "folderId",
                                 folder.id.toString(),
