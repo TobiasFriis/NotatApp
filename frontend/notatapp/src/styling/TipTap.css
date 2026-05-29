@@ -11,6 +11,7 @@
     align-items: center;
     position: relative;
 }
+
 .tiptap-title-wrapper {
     width: 100%;
     display: flex;
@@ -19,12 +20,15 @@
     justify-content: center;
     flex-wrap: wrap;
 }
+
 .tiptap-title-wrapper button {
     transform: translate(-50deg);
 }
+
 .tiptap-title-wrapper button:hover {
     transform: scale(1.03);
 }
+
 .tiptap-close-button {
     background-color: var(--color-text-area);
     border: 1px solid var(--color-border);
@@ -43,6 +47,7 @@
     transform: translate(-50deg);
     font-size: 20px;
 }
+
 .tiptap-delete-button {
     background-color: var(--color-text-area);
     border: 1px solid var(--color-border);
@@ -61,6 +66,7 @@
     transform: translate(-50deg);
     font-size: 20px;
 }
+
 .tiptap-title-input {
     background-color: var(--color-text-area);
     border: 0px solid var(--color-border);
@@ -80,6 +86,7 @@
         padding-top: 80px;
         margin: 0;
     }
+
     .tiptap-close-button {
         position: fixed;
         top: 15px;
@@ -87,6 +94,7 @@
         height: 40px;
         width: 40px;
     }
+
     .tiptap-delete-button {
         position: fixed;
         top: 15px;
@@ -137,6 +145,16 @@
     position: relative;
 }
 
+.editor-wrapper.mobile-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+}
+
 .ProseMirror {
     min-height: 300px;
     padding: 20px;
@@ -149,6 +167,14 @@
     white-space: pre-wrap;
     word-break: break-word;
     overflow-wrap: anywhere;
+}
+
+.editor-wrapper.mobile-fullscreen .ProseMirror {
+    border-radius: 0;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .ProseMirror p {
@@ -205,7 +231,8 @@ ul[data-type="taskList"] li {
     display: flex;
     align-items: center;
     flex-direction: row;
-    gap: 0.5em; /* litt mellom checkbox og tekst */
+    gap: 0.5em;
+    /* litt mellom checkbox og tekst */
 }
 
 /* Label holder checkbox og TipTap span som inline */
@@ -215,8 +242,9 @@ ul[data-type="taskList"] label {
 }
 
 /* Selve innholdet (div) blir flex-item som fyller resten */
-ul[data-type="taskList"] > div {
-    display: inline; /* eller flex: 1 hvis du vil at teksten fyller linjen */
+ul[data-type="taskList"]>div {
+    display: inline;
+    /* eller flex: 1 hvis du vil at teksten fyller linjen */
     margin: 0;
 }
 
@@ -238,7 +266,8 @@ div[data-resize-handle] {
     height: 15px;
     background: transparent;
     position: absolute;
-    cursor: se-resize; /* eksempel for nederste-høyre hjørne */
+    cursor: se-resize;
+    /* eksempel for nederste-høyre hjørne */
 }
 
 .custom-drag-handle {
@@ -270,4 +299,18 @@ div[data-resize-handle] {
     gap: 4px;
     max-width: 50px;
     width: 100%;
+}
+
+
+.mobile-fullscreen-button {
+    position: absolute;
+    transform: translate(0%, 0%);
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+    background-color: transparent;
+    border: none;
+    color: var(--color-primary-text);
+    box-shadow: none;
+    font-size: 18px;
 }

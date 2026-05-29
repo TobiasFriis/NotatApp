@@ -18,7 +18,7 @@ import {
 import { FaCode, FaListUl } from "react-icons/fa6";
 import { IoCheckboxOutline } from "react-icons/io5";
 import { FaListOl } from "react-icons/fa";
-import { LuHeading1, LuHeading2 } from "react-icons/lu";
+import { LuFullscreen, LuHeading1, LuHeading2 } from "react-icons/lu";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import {
     TbTableColumn,
@@ -58,6 +58,8 @@ const TipTapEditor: React.FC<Props> = ({
 }) => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [tablePopupOpen, setTablePopupOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [mobileFullscreen, setMobileFullScreen] = useState(false);
 
     const editor = useEditor({
         extensions: [
@@ -131,6 +133,12 @@ const TipTapEditor: React.FC<Props> = ({
         setContent("");
     };
 
+    const checkIfMobile = () => {
+        if (window.innerWidth <= 1000) {
+            setIsMobile(true);
+        }
+    }
+
     useEffect(() => {
         if (!editor) return;
 
@@ -141,6 +149,7 @@ const TipTapEditor: React.FC<Props> = ({
 
     useEffect(() => {
         scrollToTop();
+        checkIfMobile();
     }, [openNote]);
 
     if (!editor) return null;
@@ -287,13 +296,21 @@ const TipTapEditor: React.FC<Props> = ({
             </div>
             <div
                 ref={editorRef}
-                className="editor-wrapper"
+                className={`editor-wrapper ${mobileFullscreen ? "mobile-fullscreen" : ""}`}
                 onKeyDown={(e) => {
                     if (e.key === "Tab") {
                         e.preventDefault();
                     }
                 }}
             >
+                {isMobile && (
+                    <button
+                        className="mobile-fullscreen-button"
+                        onClick={() => setMobileFullScreen(!mobileFullscreen)}
+                    >
+                        <LuFullscreen />
+                    </button>
+                )}
                 <EditorContent editor={editor} />
             </div>
         </div>

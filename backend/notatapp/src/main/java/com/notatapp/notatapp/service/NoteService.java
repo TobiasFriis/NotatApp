@@ -20,7 +20,7 @@ public class NoteService {
     private final NoteRepository noteRepository;
     private final FolderRepository folderRepository;
     private final UserRepository userRepository;
-    
+
     /* CREATE */
     public Note createNote(String title, String content, Long folderId, User user) {
         Folder folder = null;
@@ -63,8 +63,10 @@ public class NoteService {
     public Note updateNote(Long noteId, Long userId, String title, String content, Long folderId) {
         Note note = getNote(noteId, userId);
 
-        if (title != null) note.setTitle(title);
-        if (content != null) note.setContent(content);
+        if (title != null)
+            note.setTitle(title);
+        if (content != null)
+            note.setContent(content);
         if (folderId != null) {
             Folder folder = folderRepository.findByIdAndOwnerId(folderId, userId)
                     .orElseThrow(() -> new RuntimeException("Folder not found"));
