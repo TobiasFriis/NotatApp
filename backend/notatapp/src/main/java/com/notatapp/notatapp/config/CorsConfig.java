@@ -9,22 +9,23 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class CorsConfig {
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://100.105.50.64:5173");
-        configuration.addAllowedOrigin("http://100.105.50.64:3000");
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://100.84.169.41:5173");
-        configuration.addAllowedOrigin("http://100.102.61.81:5173");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowCredentials(true);
+    configuration.addAllowedOrigin("http://100.105.50.64:5173");
+    configuration.addAllowedOrigin("http://100.105.50.64:3000");
+    configuration.addAllowedOrigin("http://localhost:3000");
+    configuration.addAllowedOrigin("http://localhost:5173");
+    configuration.addAllowedOrigin("http://100.84.169.41:5173");
+    configuration.addAllowedOrigin("http://100.102.61.81:5173");
+    configuration.addAllowedOrigin("http://100.89.205.105:5173");
+    configuration.addAllowedOrigin("http://100.89.205.105:3000");
+    configuration.addAllowedHeader("*");
+    configuration.addAllowedMethod("*");
 
-        UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 }
